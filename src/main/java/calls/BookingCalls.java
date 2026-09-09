@@ -1,11 +1,14 @@
 package calls;
 
 import io.restassured.response.Response;
+import models.BookingModel;
 
 
 import static io.restassured.RestAssured.given;
 
 public class BookingCalls {
+
+    //RequestBody json სახით -> ბუქინგის დამატება
     public Response createBooking(String firstname,String lastname, int totalprice) {
         String requestBody = """
                 {
@@ -23,6 +26,22 @@ public class BookingCalls {
         return given()
                 .contentType("application/json")
                 .body(requestBody)
+                .when()
+                .post("https://restful-booker.herokuapp.com/booking")
+                .then()
+                .extract()
+                .response();
+    }
+
+    //ბუქინგის დამატება Model საშუალებით
+
+    public Response createBooking(BookingModel booking){
+        return given()
+                .contentType("application/json")
+                //serialization ხდება აქ ,
+                // BookingModel გარდაიქმნება json-ად და იგზავნება post
+                // მეთოდის Request body-ში
+                .body(booking)
                 .when()
                 .post("https://restful-booker.herokuapp.com/booking")
                 .then()

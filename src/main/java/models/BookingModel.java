@@ -5,7 +5,7 @@ public class BookingModel {
     public String lastname;
     public int totalprice;
     public boolean depositpaid;
-    public BookingDatesModel bookingDatesModel;
+    public BookingDatesModel bookingdates;
     public String additionalneeds;
 
 
