@@ -1,11 +1,16 @@
 package tests;
 
 import calls.BookingCalls;
+import calls.UserCalls;
 import io.restassured.response.Response;
 import models.BookingDatesModel;
 import models.BookingModel;
+import models.UserModel;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BookingTest {
     BookingCalls bookingCalls=new BookingCalls();
@@ -91,12 +96,23 @@ public class BookingTest {
         Assert.assertEquals(getBookingModelData.bookingdates.checkout,booking.bookingdates.checkout);
         Assert.assertEquals(getBookingModelData.depositpaid,booking.depositpaid);
 
+    }
 
 
-
-
+    //5 დავალება
+    @Test
+    public void getAllUsersAndCheckEmails(){
+        UserCalls userCalls=new UserCalls();
+        List<UserModel> users= userCalls.getUsers();
+        Assert.assertFalse(users.isEmpty());
+        for(UserModel user: users){
+            Assert.assertTrue(user.email.contains("@"));
+            Assert.assertFalse(user.first_name.isEmpty());
+            Assert.assertFalse(user.last_name.isEmpty());
+        }
 
     }
+
 
 
 
