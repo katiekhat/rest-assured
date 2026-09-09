@@ -9,6 +9,9 @@ import org.testng.annotations.Test;
 
 public class BookingTest {
     BookingCalls bookingCalls=new BookingCalls();
+    BookingDatesModel dates=new BookingDatesModel();
+    BookingModel booking=new BookingModel();
+
     //1 დავალება
     @Test
     public void createBookingTest(){
@@ -22,10 +25,8 @@ public class BookingTest {
     //2 დავალება
     @Test
     public void createBookingModelTest(){
-        BookingDatesModel dates=new BookingDatesModel();
         dates.checkin="2026-09-10";
         dates.checkout="2026-09-15";
-        BookingModel booking=new BookingModel();
         booking.firstname="Nino";
         booking.lastname="Shiukashvili";
         booking.totalprice=600;
@@ -50,10 +51,8 @@ public class BookingTest {
         Response postResponse=bookingCalls.createBooking("anano","anano2",200);
         Assert.assertEquals(postResponse.getStatusCode(),200);
         int bookingId=postResponse.jsonPath().getInt("bookingid");
-        //პოსტი მუშაობს ,იმ მომენტში -> აქ გამომაქვს შექმნილი აიდი
         System.out.println("created booking id : "+bookingId);
         Assert.assertTrue(bookingId>0);
-        //ტესტი მიფეილდება რადგან ბუქინგ აიდის არ ინახავს საბოლოო ჯამში და აბრუნებს 404-ს
         Response getResponse=bookingCalls.getBooking(bookingId);
         Assert.assertEquals(getResponse.getStatusCode(),200);
         Assert.assertEquals(getResponse.jsonPath().getString("firstname"),"anano");
@@ -63,6 +62,43 @@ public class BookingTest {
 
 
     }
+
+    //4 დავალება
+    @Test
+    public void getBookingModelTest(){
+        dates.checkin="2026-09-10";
+        dates.checkout="2026-09-15";
+        booking.firstname="Mari";
+        booking.lastname="mari2";
+        booking.totalprice=299;
+        booking.depositpaid=true;
+        booking.bookingdates=dates;
+        booking.additionalneeds="Breakfast";
+        Response postResponse=bookingCalls.createBooking(booking);
+        Assert.assertEquals(postResponse.getStatusCode(),200);
+
+        int bookingId=postResponse.jsonPath().getInt("bookingid");
+        System.out.println("id: "+bookingId);
+// Deserialization -> მიღებულ რესპონსს რომელიც არის ჯეისონ ფორმატში გადაიყვანს
+// booking model ტიპის ობიექტად
+        BookingModel getBookingModelData=bookingCalls.getBookingModel(bookingId);
+
+        Assert.assertEquals(getBookingModelData.firstname,booking.firstname);
+        Assert.assertEquals(getBookingModelData.lastname,booking.lastname);
+        Assert.assertEquals(getBookingModelData.totalprice,booking.totalprice);
+        Assert.assertEquals(getBookingModelData.additionalneeds,booking.additionalneeds);
+        Assert.assertEquals(getBookingModelData.bookingdates.checkin,booking.bookingdates.checkin);
+        Assert.assertEquals(getBookingModelData.bookingdates.checkout,booking.bookingdates.checkout);
+        Assert.assertEquals(getBookingModelData.depositpaid,booking.depositpaid);
+
+
+
+
+
+
+    }
+
+
 
 
 }

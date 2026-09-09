@@ -59,4 +59,16 @@ public class BookingCalls {
 
 
     }
+
+
+    public BookingModel getBookingModel(int bookingId){
+        return given()
+                .when()
+                .get("https://restful-booker.herokuapp.com/booking/"+bookingId)
+                .then()
+                .extract()
+                .as(BookingModel.class);
+
+
+    }
 }
