@@ -52,7 +52,7 @@ public class BookingCalls {
     public Response getBooking(int bookingId){
         return given()
                 .when()
-                .get("https://restful-booker.herokuapp.com/booking"+bookingId)
+                .get("https://restful-booker.herokuapp.com/booking/"+bookingId)
                 .then()
                 .extract()
                 .response();

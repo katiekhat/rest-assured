@@ -47,7 +47,7 @@ public class BookingTest {
     //3 დავალება
     @Test
     public void getBookingTest(){
-        Response postResponse=bookingCalls.createBooking("anano","anano",200);
+        Response postResponse=bookingCalls.createBooking("anano","anano2",200);
         Assert.assertEquals(postResponse.getStatusCode(),200);
         int bookingId=postResponse.jsonPath().getInt("bookingid");
         //პოსტი მუშაობს ,იმ მომენტში -> აქ გამომაქვს შექმნილი აიდი
@@ -57,7 +57,7 @@ public class BookingTest {
         Response getResponse=bookingCalls.getBooking(bookingId);
         Assert.assertEquals(getResponse.getStatusCode(),200);
         Assert.assertEquals(getResponse.jsonPath().getString("firstname"),"anano");
-        Assert.assertEquals(getResponse.jsonPath().getString("lastname"),"anano");
+        Assert.assertEquals(getResponse.jsonPath().getString("lastname"),"anano2");
         Assert.assertEquals(getResponse.jsonPath().getInt("totalprice"),200);
         Assert.assertEquals(getResponse.jsonPath().getString("additionalneeds"),"Breakfast");
 
