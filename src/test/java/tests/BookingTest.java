@@ -8,6 +8,7 @@ import models.BookingModel;
 import models.UserModel;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import steps.BookingSteps;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ public class BookingTest {
     BookingCalls bookingCalls=new BookingCalls();
     BookingDatesModel dates=new BookingDatesModel();
     BookingModel booking=new BookingModel();
+    BookingSteps bookingSteps=new BookingSteps();
 
     //1 დავალება
     @Test
@@ -38,13 +40,14 @@ public class BookingTest {
         booking.depositpaid=true;
         booking.bookingdates=dates;
         booking.additionalneeds="Breakfast";
-        Response response=bookingCalls.createBooking(booking);
-        Assert.assertEquals(response.getStatusCode(),200);
-        Assert.assertEquals(response.jsonPath().getString("booking.firstname"),booking.firstname);
-        Assert.assertEquals(response.jsonPath().getString("booking.lastname"),booking.lastname);
-        Assert.assertEquals(response.jsonPath().getInt("booking.totalprice"),booking.totalprice);
-        Assert.assertEquals(response.jsonPath().getString("booking.bookingdates.checkin"),booking.bookingdates.checkin);
-        Assert.assertEquals(response.jsonPath().getString("booking.bookingdates.checkout"),booking.bookingdates.checkout);
+
+        bookingSteps.setData(booking).addBook().getBooking().checkBooking();
+        //Assert.assertEquals(response.getStatusCode(),200);
+        //Assert.assertEquals(response.jsonPath().getString("booking.firstname"),booking.firstname);
+        //Assert.assertEquals(response.jsonPath().getString("booking.lastname"),booking.lastname);
+        //Assert.assertEquals(response.jsonPath().getInt("booking.totalprice"),booking.totalprice);
+        //Assert.assertEquals(response.jsonPath().getString("booking.bookingdates.checkin"),booking.bookingdates.checkin);
+        //Assert.assertEquals(response.jsonPath().getString("booking.bookingdates.checkout"),booking.bookingdates.checkout);
 
 
 
