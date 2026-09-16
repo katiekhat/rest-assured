@@ -1,5 +1,7 @@
 package calls;
 
+import Specification.Booking.RequestSpecificationBooking;
+import Utils.Configuration;
 import io.restassured.response.Response;
 import models.BookingModel;
 
@@ -37,13 +39,13 @@ public class BookingCalls {
 
     public Response createBooking(BookingModel booking){
         return given()
-                .contentType("application/json")
+                .spec(RequestSpecificationBooking.requestSpecification())
                 //serialization ხდება აქ ,
                 // BookingModel გარდაიქმნება json-ად და იგზავნება post
                 // მეთოდის Request body-ში
                 .body(booking)
                 .when()
-                .post("https://restful-booker.herokuapp.com/booking")
+                .post()
                 .then()
                 .extract()
                 .response();
@@ -51,8 +53,9 @@ public class BookingCalls {
 
     public Response getBooking(int bookingId){
         return given()
+                .spec(RequestSpecificationBooking.requestSpecification())
                 .when()
-                .get("https://restful-booker.herokuapp.com/booking/"+bookingId)
+                .get("/"+bookingId)
                 .then()
                 .extract()
                 .response();
